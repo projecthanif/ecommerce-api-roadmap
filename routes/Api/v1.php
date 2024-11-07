@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\Auth\CurrentUserController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
-use App\Http\Controllers\Api\V1\CurrentUserController;
 use App\Http\Middleware\JwtMiddleware;
+use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('auth')->group(function () {

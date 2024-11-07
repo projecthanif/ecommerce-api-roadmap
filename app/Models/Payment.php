@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Api\V1\PaymentStatus;
+use App\Enums\PaymentStatus;
 
 class Payment extends AbstractModel
 {
