@@ -23,7 +23,9 @@ class LoginUserAction
             $user = auth()->user();
             $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
 
-            return response()->json(compact('token'));
+            return response()->json([
+                'token' => $token,
+            ]);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }
