@@ -11,7 +11,7 @@ class Payment extends AbstractModel
         'order_id',
         'amount',
         'payment_method',
-        'status'
+        'status',
     ];
 
     protected function casts(): array

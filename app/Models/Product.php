@@ -16,7 +16,6 @@ class Product extends AbstractModel
         'image_url',
     ];
 
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

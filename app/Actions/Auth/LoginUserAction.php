@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Api\V1;
+namespace App\Actions\Auth;
 
 use Illuminate\Http\JsonResponse;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -8,12 +8,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginUserAction
 {
-    public function execute(array $validated):JsonResponse
+    public function execute(array $validated): JsonResponse
     {
         try {
             $attempt = JWTAuth::attempt($validated);
 
-            if (!$attempt) {
+            if (! $attempt) {
                 return response()->json([
                     'message' => 'You are not yet registered',
                     'status' => 401,
@@ -23,13 +23,13 @@ class LoginUserAction
             $user = auth()->user();
             $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
 
-            return response()->json([
+            $responsePayload = [
                 'token' => $token,
-            ]);
+                'type' => 'bearer',
+            ];
+            return successResponse('Logged in Successfully', $responsePayload);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }
     }
-
-
 }

@@ -2,15 +2,26 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Actions\Api\V1\RegisterNewUserAction;
+use App\Actions\Auth\RegisterNewUserAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\RegisterUserRequest;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class RegisterController extends Controller
 {
-    public function __invoke(RegisterUserRequest $request, RegisterNewUserAction $action): JsonResponse
+
+    public function __construct(
+        public User $user
+    )
     {
-        return $action->execute($request->validated());
+    }
+
+    public function __invoke(RegisterUserRequest $request): JsonResponse
+    {
+        $this->user->create($request->validated());
+        return response()->json([
+            'message' => 'User created successfully',
+        ], status: 201);
     }
 }
