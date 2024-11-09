@@ -28,13 +28,7 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware([JwtMiddleware::class])->group(function () {
 
-    Route::prefix('category')->group(function () {
-        Route::post('/', CategoryController::class);
-//        Route::get('/', CreateNewCategoryController::class);
-    });
+    Route::apiResource('category', CategoryController::class);
 
-
-    Route::prefix('products')->group(function () {
-    });
 });
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Resources\V1\Category\CategoryCollection;
+use App\Http\Resources\V1\Category\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,7 +26,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return new CategoryCollection($this->category->all());
     }
 
     /**
@@ -44,7 +46,9 @@ class CategoryController extends Controller
 
         $createdData = $this->category->create($validatedData);
 
-        return successResponse(message: 'Category created successfully', statusCode: 201);
+        $resourceData = new CategoryResource($createdData);
+
+        return successResponse(message: 'Category created successfully', data: $resourceData, statusCode: 201);
     }
 
     /**
@@ -52,7 +56,8 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $category = $this->category->find($id);
+        return new CategoryResource($category);
     }
 
     /**

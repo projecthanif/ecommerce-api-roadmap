@@ -3,15 +3,16 @@
 declare(strict_types=1);
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-function successResponse(string $message, ?array $data, int $statusCode = 200): JsonResponse
+function successResponse(string $message, null|array|JsonResource $data, int $statusCode = 200): JsonResponse
 {
     $response = [
         'message' => $message,
         'statusCode' => $statusCode,
     ];
 
-    if (count($data) > 0) {
+    if ($data !== null) {
         $response['data'] = $data;
     }
 
