@@ -14,6 +14,7 @@ class CurrentUserController extends Controller
             'email' => $user->email,
             'role' => $user->role,
         ];
-        return successResponse(message: "User info", data: $data);
+
+        return successResponse(message: 'User info', data: $data);
     }
 }

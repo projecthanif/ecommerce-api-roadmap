@@ -9,18 +9,14 @@ use App\Http\Resources\V1\Category\CategoryCollection;
 use App\Http\Resources\V1\Category\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use League\CommonMark\Normalizer\SlugNormalizer;
 
 class CategoryController extends Controller
 {
-
     public function __construct(
-        public Category       $category,
+        public Category $category,
         public SlugNormalizer $slugNormalizer
-    )
-    {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -66,7 +62,8 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
         $validatedData = $request->validated();
-        $mutatedData = $category->update($validatedData);
+        $category->update($validatedData);
+
         return successResponse(
             'Category updated Successfully',
             data: new CategoryResource($category),

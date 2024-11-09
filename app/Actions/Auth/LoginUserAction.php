@@ -27,6 +27,7 @@ class LoginUserAction
                 'token' => $token,
                 'type' => 'bearer',
             ];
+
             return successResponse('Logged in Successfully', $responsePayload);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
