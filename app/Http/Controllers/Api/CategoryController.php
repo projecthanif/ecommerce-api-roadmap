@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\V1\Category\CategoryCollection;
 use App\Http\Resources\V1\Category\CategoryResource;
 use App\Models\Category;
@@ -24,7 +25,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): CategoryCollection
     {
         return new CategoryCollection($this->category->all());
     }
@@ -62,9 +63,14 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
-        //
+        $validatedData = $request->validated();
+        $mutatedData = $category->update($validatedData);
+        return successResponse(
+            'Category updated Successfully',
+            data: new CategoryResource($category),
+        );
     }
 
     /**
