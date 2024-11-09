@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Auth;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Actions\Auth\RegisterNewUserAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\RegisterUserRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
