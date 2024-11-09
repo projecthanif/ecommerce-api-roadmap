@@ -26,6 +26,7 @@ class LoginUserAction
             $responsePayload = [
                 'token' => $token,
                 'type' => 'bearer',
+                'expires' => '60 min'
             ];
 
             return successResponse('Logged in Successfully', $responsePayload);

@@ -3,40 +3,60 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Brand\StoreBrandRequest;
+use App\Http\Requests\Brand\UpdateBrandRequest;
+use App\Http\Resources\Brand\BrandResource;
+use App\Models\Brand;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Brand $brand): JsonResponse|BrandResource
     {
-        //
+        if ($brand->count() === 0) {
+            return successResponse('Brand is empty', data: null);
+        }
+        return new BrandResource($brand->all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBrandRequest $request, Brand $brand): JsonResponse
     {
-        //
+        $validatedData = $request->validated();
+
+        $exist = $brand->where([
+            'name' => $validatedData['name']
+        ])->exists();
+
+        if ($exist) {
+            return successResponse('Brand already exist', data: null);
+        }
+
+        $createdData = $brand->create($validatedData);
+
+        return successResponse('Brand created successfully', new BrandResource($createdData), 201);
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Brand $brand): JsonResponse
     {
-        //
+        return successResponse('Brand retrieved successfully', new BrandResource($brand));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateBrandRequest $request, Brand $brand)
     {
-        //
+        $brand->update($request->validated());
+        return successResponse('Brand updated successfully', new BrandResource($brand));
     }
 
     /**
