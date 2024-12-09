@@ -9,21 +9,25 @@ use App\Http\Resources\Category\CategoryCollection;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use JsonException;
 use League\CommonMark\Normalizer\SlugNormalizer;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
     public function __construct(
-        public Category $category,
+        public Category       $category,
         public SlugNormalizer $slugNormalizer
-    ) {}
+    )
+    {
+    }
 
     /**
      * Display a listing of the resource.
      */
     public function index(): CategoryCollection
     {
-        return new CategoryCollection($this->category->all());
+        return new CategoryCollection($this->category->paginate(10));
     }
 
     /**
@@ -45,15 +49,41 @@ class CategoryController extends Controller
 
         $resourceData = new CategoryResource($createdData);
 
-        return successResponse(message: 'Category created successfully', data: $resourceData, statusCode: 201);
+        /**
+         * @var Response::HTTP_CREATED => 201
+         */
+        return successResponse(
+            message: 'Category created successfully',
+            data: $resourceData,
+            statusCode: Response::HTTP_CREATED
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category): JsonResponse
+    public function show(string $id): JsonResponse
     {
-        return successResponse(message: 'Category retrieved successfully', data: new CategoryResource($category));
+
+        $category = Category::find($id);
+        try {
+
+            if (!$category) {
+                throw new JsonException('Category not found');
+            }
+
+            $allCategory = new CategoryCollection($category->with('products')->get());
+            return successResponse(
+                message: 'Category retrieved successfully',
+                data: $allCategory
+            );
+        } catch (JsonException $e) {
+
+            return errorResponse(
+                message: $e->getMessage(),
+                statusCode: Response::HTTP_NOT_FOUND
+            );
+        }
     }
 
     /**

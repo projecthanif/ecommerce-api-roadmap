@@ -28,7 +28,7 @@ class StoreProductRequest extends FormRequest
             'price' => 'required|numeric',
             'quantity' => 'required|numeric',
             'image_url' => 'nullable|string',
-            'brand_id' => 'required|exists:brands,id',
+            'brand_id' => 'nullable|exists:brands,id',
         ];
     }
 

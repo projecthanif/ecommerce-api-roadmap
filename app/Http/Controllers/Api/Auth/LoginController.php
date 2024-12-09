@@ -11,6 +11,6 @@ class LoginController extends Controller
 {
     public function __invoke(LoginUserRequest $request, LoginUserAction $action): JsonResponse
     {
-        return $action->execute($request->validated());
+        return $action->handle($request->validated());
     }
 }

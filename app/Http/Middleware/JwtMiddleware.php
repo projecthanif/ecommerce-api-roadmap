@@ -18,7 +18,7 @@ class JwtMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            $user = JWTAuth::parseToken()->authenticate();
+            JWTAuth::parseToken()->authenticate();
         } catch (JwtException $e) {
             return errorResponse('Invalid Token', Response::HTTP_UNAUTHORIZED);
         }

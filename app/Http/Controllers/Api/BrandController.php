@@ -20,7 +20,7 @@ class BrandController extends Controller
             return successResponse('Brand is empty', data: null);
         }
 
-        return new BrandCollection($brand->all());
+        return new BrandCollection($brand->paginate(10));
     }
 
     /**

@@ -8,12 +8,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginUserAction
 {
-    public function execute(array $validated): JsonResponse
+    public function handle(array $validated): JsonResponse
     {
         try {
             $attempt = JWTAuth::attempt($validated);
 
-            if (! $attempt) {
+            if (!$attempt) {
                 return response()->json([
                     'message' => 'You are not yet registered',
                     'status' => 401,
