@@ -11,13 +11,17 @@ use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use JsonException;
+use SebastianBergmann\CodeCoverage\Exception;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class CategoryController extends Controller
 {
     public function __construct(
         public Category $category,
-    ) {}
+    )
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -40,7 +44,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
         try {
 
-            if (! $category) {
+            if (!$category) {
                 throw new JsonException('Category not found');
             }
 
@@ -59,18 +63,24 @@ class CategoryController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
+    public function update(UpdateCategoryRequest $request, string $id): JsonResponse
     {
-        $validatedData = $request->validated();
-        $category->update($validatedData);
+        try {
+            $category = Category::find($id);
 
-        return successResponse(
-            'Category updated Successfully',
-            data: new CategoryResource($category),
-        );
+            if (!$category) {
+                throw new NotFoundResourceException('Category does not exists');
+            }
+            $validatedData = $request->validated();
+            $category->update($validatedData);
+
+            return successResponse(
+                'Category updated Successfully',
+                data: new CategoryResource($category),
+            );
+        } catch (NotFoundResourceException $exception) {
+            return errorResponse($exception->getMessage(), Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
