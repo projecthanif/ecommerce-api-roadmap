@@ -13,7 +13,7 @@ class LoginUserAction
         try {
             $attempt = JWTAuth::attempt($validated);
 
-            if (!$attempt) {
+            if (! $attempt) {
                 return response()->json([
                     'message' => 'You are not yet registered',
                     'status' => 401,
@@ -26,7 +26,7 @@ class LoginUserAction
             $responsePayload = [
                 'token' => $token,
                 'type' => 'bearer',
-                'expires' => '60 min'
+                'expires' => '60 min',
             ];
 
             return successResponse('Logged in Successfully', $responsePayload);

@@ -7,7 +7,6 @@ use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use League\CommonMark\Normalizer\SlugNormalizer;
 
 class ProductController extends Controller
@@ -20,7 +19,7 @@ class ProductController extends Controller
         $products = Product::paginate(10);
 
         if ($products->isEmpty()) {
-            return response()->json(["message" => "No products found"], 404);
+            return response()->json(['message' => 'No products found'], 404);
         }
 
         $productCollection = ProductResource::collection($products);
@@ -34,7 +33,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request, Product $product)
     {
         $data = $request->validated();
-        $data['slug'] = (new SlugNormalizer())->normalize($data['name']);
+        $data['slug'] = (new SlugNormalizer)->normalize($data['name']);
         $createdProduct = $product->create($data);
 
         return successResponse('Product created Successfully', new ProductResource($createdProduct), 201);
@@ -48,6 +47,7 @@ class ProductController extends Controller
         $retrievedProduct = (new ProductResource($product))->additional([
             'include_description' => true,
         ]);
+
         return successResponse('Product retrieved Successfully', $retrievedProduct);
     }
 

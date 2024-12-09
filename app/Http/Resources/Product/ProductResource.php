@@ -23,7 +23,7 @@ class ProductResource extends JsonResource
             'description' => $this->when(
                 $this->additional['include_description'] ?? null,
                 $this->description
-            )
+            ),
         ];
     }
 }

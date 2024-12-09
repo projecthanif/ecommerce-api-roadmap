@@ -9,11 +9,9 @@ use App\Http\Resources\Brand\BrandCollection;
 use App\Http\Resources\Brand\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-
     public function index(Brand $brand): JsonResponse|BrandCollection
     {
         if ($brand->count() === 0) {
@@ -31,7 +29,7 @@ class BrandController extends Controller
         $validatedData = $request->validated();
 
         $exist = $brand->where([
-            'name' => $validatedData['name']
+            'name' => $validatedData['name'],
         ])->exists();
 
         if ($exist) {
@@ -58,6 +56,7 @@ class BrandController extends Controller
     public function update(UpdateBrandRequest $request, Brand $brand)
     {
         $brand->update($request->validated());
+
         return successResponse('Brand updated successfully', new BrandResource($brand));
     }
 
