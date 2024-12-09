@@ -10,7 +10,6 @@ use App\Http\Resources\Category\CategoryCollection;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
-use JsonException;
 use SebastianBergmann\CodeCoverage\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
@@ -19,9 +18,7 @@ class CategoryController extends Controller
 {
     public function __construct(
         public Category $category,
-    )
-    {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -44,8 +41,8 @@ class CategoryController extends Controller
         $category = Category::find($id);
         try {
 
-            if (!$category) {
-                throw new JsonException('Category not found');
+            if (! $category) {
+                throw new NotFoundResourceException('Category not found');
             }
 
             $allCategory = new CategoryCollection($category->with('products')->get());
@@ -54,7 +51,7 @@ class CategoryController extends Controller
                 message: 'Category retrieved successfully',
                 data: $allCategory
             );
-        } catch (JsonException $e) {
+        } catch (NotFoundResourceException $e) {
 
             return errorResponse(
                 message: $e->getMessage(),
@@ -68,7 +65,7 @@ class CategoryController extends Controller
         try {
             $category = Category::find($id);
 
-            if (!$category) {
+            if (! $category) {
                 throw new NotFoundResourceException('Category does not exists');
             }
             $validatedData = $request->validated();
@@ -85,9 +82,26 @@ class CategoryController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @throws \Exception
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
-        //
+        try {
+
+            $category = Category::find($id);
+
+            if (! $category) {
+                throw new NotFoundResourceException('Category does not exists');
+            }
+
+            if ($category->delete()) {
+                return successResponse('Category deleted successfully');
+            }
+
+            throw new \Exception('Category Failed to delete');
+        } catch (Exception $exception) {
+            return errorResponse($exception->getMessage(), Response::HTTP_NOT_FOUND);
+        }
     }
 }
