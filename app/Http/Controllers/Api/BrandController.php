@@ -26,14 +26,6 @@ class BrandController extends Controller
     {
         $validatedData = $request->validated();
 
-        $exist = $brand->where([
-            'name' => $validatedData['name'],
-        ])->exists();
-
-        if ($exist) {
-            return errorResponse('Brand already exist');
-        }
-
         $validatedData['slug'] = (new SlugNormalizer())->normalize($validatedData['name']);
 
         $createdData = $brand->create($validatedData);
