@@ -34,10 +34,10 @@ class CategoryController extends Controller
         return $action->handle($validatedData);
     }
 
-    public function show(string $id): JsonResponse
+    public function show(string $slug): JsonResponse
     {
         try {
-            $category = Category::find($id);
+            $category = Category::where('slug', $slug)->get()->first();
 
             if (!$category) {
                 throw new NotFoundResourceException('Category not found');
