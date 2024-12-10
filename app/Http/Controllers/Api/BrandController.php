@@ -79,8 +79,20 @@ class BrandController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
-        //
+        try {
+            $brand = Brand::find($id);
+
+            if (!$brand) {
+                throw new NotFoundResourceException('Brand not found');
+            }
+            $brand->delete();
+
+            return successResponse('Brand deleted successfully');
+
+        } catch (NotFoundResourceException $exception) {
+            return errorResponse($exception->getMessage());
+        }
     }
 }
