@@ -44,7 +44,7 @@ class BrandController extends Controller
     public function show(string $slug): JsonResponse
     {
         try {
-            $brand = Brand::find('slug', $slug)?->get()?->first();
+            $brand = Brand::where('slug', $slug)?->get()?->first();
             if (!$brand) {
                 throw new NotFoundResourceException('Brand not found');
             }
@@ -61,11 +61,19 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBrandRequest $request, Brand $brand)
+    public function update(UpdateBrandRequest $request, string $id): JsonResponse
     {
-        $brand->update($request->validated());
+        try {
+            $brand = Brand::find($id);
+            if (!$brand) {
+                throw new NotFoundResourceException('Brand not found');
+            }
+            $brand->update($request->validated());
+            return successResponse('Brand updated successfully', new BrandResource($brand));
 
-        return successResponse('Brand updated successfully', new BrandResource($brand));
+        } catch (NotFoundResourceException $exception) {
+            return errorResponse($exception->getMessage());
+        }
     }
 
     /**
