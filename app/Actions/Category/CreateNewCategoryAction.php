@@ -6,6 +6,7 @@ use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
 use League\CommonMark\Normalizer\SlugNormalizer;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\JsonResponse;
 
 class CreateNewCategoryAction
 {
@@ -14,7 +15,7 @@ class CreateNewCategoryAction
         public SlugNormalizer $slugNormalizer
     ) {}
 
-    public function handle(array $validatedData)
+    public function handle(array $validatedData): JsonResponse
     {
 
         $validatedData['slug'] = $this->slugNormalizer->normalize($validatedData['name']);
@@ -23,9 +24,6 @@ class CreateNewCategoryAction
 
         $resourceData = new CategoryResource($createdData);
 
-        /**
-         * @var Response::HTTP_CREATED => 201
-         */
         return successResponse(
             message: 'Category created successfully',
             data: $resourceData,

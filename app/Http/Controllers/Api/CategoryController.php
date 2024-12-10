@@ -10,7 +10,6 @@ use App\Http\Resources\Category\CategoryCollection;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
-use SebastianBergmann\CodeCoverage\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
@@ -18,14 +17,14 @@ class CategoryController extends Controller
 {
     public function __construct(
         public Category $category,
-    ) {}
+    )
+    {
+    }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): CategoryCollection
     {
-        return new CategoryCollection($this->category->paginate(10));
+        $categories = $this->category->paginate(10);
+        return new CategoryCollection($categories);
     }
 
     public function store(StoreCategoryRequest $request, CreateNewCategoryAction $action): JsonResponse
@@ -37,19 +36,18 @@ class CategoryController extends Controller
 
     public function show(string $id): JsonResponse
     {
-
-        $category = Category::find($id);
         try {
+            $category = Category::find($id);
 
-            if (! $category) {
+            if (!$category) {
                 throw new NotFoundResourceException('Category not found');
             }
 
-            $allCategory = new CategoryCollection($category->with('products')->get());
+            $categoryWithProducts = new CategoryCollection($category->with('products')->get());
 
             return successResponse(
                 message: 'Category retrieved successfully',
-                data: $allCategory
+                data: $categoryWithProducts
             );
         } catch (NotFoundResourceException $e) {
 
@@ -65,7 +63,7 @@ class CategoryController extends Controller
         try {
             $category = Category::find($id);
 
-            if (! $category) {
+            if (!$category) {
                 throw new NotFoundResourceException('Category does not exists');
             }
             $validatedData = $request->validated();
@@ -91,7 +89,7 @@ class CategoryController extends Controller
 
             $category = Category::find($id);
 
-            if (! $category) {
+            if (!$category) {
                 throw new NotFoundResourceException('Category does not exists');
             }
 
@@ -100,7 +98,7 @@ class CategoryController extends Controller
             }
 
             throw new \Exception('Category Failed to delete');
-        } catch (Exception $exception) {
+        } catch (NotFoundResourceException $exception) {
             return errorResponse($exception->getMessage(), Response::HTTP_NOT_FOUND);
         }
     }
