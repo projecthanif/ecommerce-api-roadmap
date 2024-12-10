@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Brand;
 
+use App\Http\Resources\Product\ProductCollection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,9 +18,7 @@ class BrandResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            //            'products' => $this->whenLoaded('products', function ($resource) {
-            ////                return new Product;
-            //            })
+            'products' => new ProductCollection($this->whenLoaded('products')),
         ];
     }
 }

@@ -37,7 +37,7 @@ class CategoryController extends Controller
     public function show(string $slug): JsonResponse
     {
         try {
-            $category = Category::where('slug', $slug)->get()->first();
+            $category = Category::where('slug', $slug)?->get()?->first();
 
             if (!$category) {
                 throw new NotFoundResourceException('Category not found');
@@ -46,7 +46,7 @@ class CategoryController extends Controller
             $categoryWithProducts = new CategoryCollection($category->with('products')->get());
 
             return successResponse(
-                message: 'Category retrieved successfully',
+                message: 'Category with products retrieved successfully',
                 data: $categoryWithProducts
             );
         } catch (NotFoundResourceException $e) {
