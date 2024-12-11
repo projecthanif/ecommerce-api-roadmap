@@ -33,7 +33,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request, Product $product)
     {
         $data = $request->validated();
-        $data['slug'] = (new SlugNormalizer)->normalize($data['name']);
+        $data['slug'] = (new SlugNormalizer())->normalize($data['name']);
         $createdProduct = $product->create($data);
 
         return successResponse('Product created Successfully', new ProductResource($createdProduct), 201);

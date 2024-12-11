@@ -13,7 +13,8 @@ class CreateNewCategoryAction
     public function __construct(
         public Category $category,
         public SlugNormalizer $slugNormalizer
-    ) {}
+    ) {
+    }
 
     public function handle(array $validatedData): JsonResponse
     {
