@@ -2,6 +2,11 @@ version = 1
 
 [[analyzers]]
 name = "php"
+enabled = true
 
-[[analyzers]]
-name = "javascript"
+  [analyzers.meta]
+  skip_doc_coverage = ["class", "magic", "nonpublic"]
+
+[[transformers]]
+name = "php-cs-fixer"
+enabled = true
