@@ -17,13 +17,12 @@ class CategoryController extends Controller
 {
     public function __construct(
         public Category $category,
-    )
-    {
-    }
+    ) {}
 
     public function index(): CategoryCollection
     {
         $categories = $this->category->paginate(10);
+
         return new CategoryCollection($categories);
     }
 
@@ -39,7 +38,7 @@ class CategoryController extends Controller
         try {
             $category = Category::where('slug', $slug)?->get()?->first();
 
-            if (!$category) {
+            if (! $category) {
                 throw new NotFoundResourceException('Category not found');
             }
 
@@ -63,7 +62,7 @@ class CategoryController extends Controller
         try {
             $category = Category::find($id);
 
-            if (!$category) {
+            if (! $category) {
                 throw new NotFoundResourceException('Category does not exists');
             }
             $validatedData = $request->validated();
@@ -89,7 +88,7 @@ class CategoryController extends Controller
 
             $category = Category::find($id);
 
-            if (!$category) {
+            if (! $category) {
                 throw new NotFoundResourceException('Category does not exists');
             }
 

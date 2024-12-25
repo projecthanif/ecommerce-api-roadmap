@@ -4,9 +4,9 @@ namespace App\Actions\Category;
 
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use League\CommonMark\Normalizer\SlugNormalizer;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Http\JsonResponse;
 
 class CreateNewCategoryAction
 {

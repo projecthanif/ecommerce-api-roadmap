@@ -26,7 +26,7 @@ class BrandController extends Controller
     {
         $validatedData = $request->validated();
 
-        $validatedData['slug'] = (new SlugNormalizer())->normalize($validatedData['name']);
+        $validatedData['slug'] = (new SlugNormalizer)->normalize($validatedData['name']);
 
         $createdData = $brand->create($validatedData);
 
@@ -45,11 +45,12 @@ class BrandController extends Controller
     {
         try {
             $brand = Brand::where('slug', $slug)?->get()?->first();
-            if (!$brand) {
+            if (! $brand) {
                 throw new NotFoundResourceException('Brand not found');
             }
 
             $brandsWithProduct = new BrandCollection($brand->with('products')->get());
+
             return successResponse('Brand retrieved successfully', $brandsWithProduct);
 
         } catch (NotFoundResourceException $exception) {
@@ -65,10 +66,11 @@ class BrandController extends Controller
     {
         try {
             $brand = Brand::find($id);
-            if (!$brand) {
+            if (! $brand) {
                 throw new NotFoundResourceException('Brand not found');
             }
             $brand->update($request->validated());
+
             return successResponse('Brand updated successfully', new BrandResource($brand));
 
         } catch (NotFoundResourceException $exception) {
@@ -84,7 +86,7 @@ class BrandController extends Controller
         try {
             $brand = Brand::find($id);
 
-            if (!$brand) {
+            if (! $brand) {
                 throw new NotFoundResourceException('Brand not found');
             }
             $brand->delete();
