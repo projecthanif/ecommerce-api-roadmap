@@ -14,10 +14,10 @@ class LoginUserAction
         try {
             $attempt = JWTAuth::attempt($validated);
 
-            if (! $attempt) {
+            if (!$attempt) {
                 return response()->json([
-                    'message' => 'You are not yet registered',
                     'status' => 401,
+                    'message' => 'Invalid email or password',
                 ]);
             }
 
