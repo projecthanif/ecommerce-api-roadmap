@@ -2,6 +2,7 @@
 
 namespace App\Actions\Auth;
 
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\JsonResponse;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -24,12 +25,11 @@ class LoginUserAction
             $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
 
             $responsePayload = [
+                'user' => new UserResource($user),
                 'token' => $token,
-                'type' => 'bearer',
-                'expires' => '60 min',
             ];
 
-            return successResponse('Logged in Successfully', $responsePayload);
+            return successResponse('Login successfully', $responsePayload);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }

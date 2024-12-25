@@ -8,8 +8,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 function successResponse(string $message, null|array|JsonResource $data = null, int $statusCode = 200): JsonResponse
 {
     $response = [
-        'message' => $message,
         'statusCode' => $statusCode,
+        'message' => $message,
     ];
 
     if ($data !== null) {
