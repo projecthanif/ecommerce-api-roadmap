@@ -9,22 +9,16 @@ use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\Category\CategoryCollection;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class CategoryController extends Controller
 {
-    public function __construct(
-        public Category $category,
-    )
-    {
-    }
 
     public function index(): CategoryCollection
     {
-        $categories = $this->category->paginate(10);
+        $categories = Category::paginate(10);
 
         return new CategoryCollection($categories);
     }
