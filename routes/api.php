@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\CurrentUserController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Middleware\JwtMiddleware;
@@ -26,5 +27,5 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('brand', BrandController::class);
     Route::apiResource('product', ProductController::class);
-
+    Route::apiResource('cart', CartController::class);
 });

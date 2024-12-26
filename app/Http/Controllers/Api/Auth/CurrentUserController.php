@@ -7,7 +7,7 @@ use App\Http\Resources\User\UserResource;
 
 class CurrentUserController extends Controller
 {
-    public function __invoke()
+    public function __invoke(): \Illuminate\Http\JsonResponse
     {
         $user = auth()->user();
         $data = new UserResource($user);

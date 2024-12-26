@@ -9,6 +9,7 @@ class Brand extends AbstractModel
     protected $fillable = [
         'name',
         'description',
+        'slug',
     ];
 
     public function products(): HasMany

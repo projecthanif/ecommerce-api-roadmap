@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 function successResponse(string $message, null|array|JsonResource $data = null, int $statusCode = 200): JsonResponse
 {
     $response = [
-        'statusCode' => $statusCode,
+        'status' => $statusCode,
         'message' => $message,
     ];
 
