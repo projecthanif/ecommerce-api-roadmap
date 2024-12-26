@@ -19,7 +19,9 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'products' => new ProductCollection($this->whenLoaded('products')),
+            'products' => $this->whenLoaded('products', function ($products) {
+                return new ProductCollection($products);
+            }),
         ];
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\Category\CategoryCollection;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
@@ -17,7 +18,9 @@ class CategoryController extends Controller
 {
     public function __construct(
         public Category $category,
-    ) {}
+    )
+    {
+    }
 
     public function index(): CategoryCollection
     {
@@ -36,13 +39,13 @@ class CategoryController extends Controller
     public function show(string $slug): JsonResponse
     {
         try {
-            $category = Category::where('slug', $slug)?->get()?->first();
+            $category = Category::where('slug', $slug)->with('products')?->first();
 
-            if (! $category) {
+            if (!$category) {
                 throw new NotFoundResourceException('Category not found');
             }
 
-            $categoryWithProducts = new CategoryCollection($category->with('products')->get());
+            $categoryWithProducts = new CategoryCollection(collect([$category]));
 
             return successResponse(
                 message: 'Category with products retrieved successfully',
@@ -62,7 +65,7 @@ class CategoryController extends Controller
         try {
             $category = Category::find($id);
 
-            if (! $category) {
+            if (!$category) {
                 throw new NotFoundResourceException('Category does not exists');
             }
             $validatedData = $request->validated();
@@ -88,7 +91,7 @@ class CategoryController extends Controller
 
             $category = Category::find($id);
 
-            if (! $category) {
+            if (!$category) {
                 throw new NotFoundResourceException('Category does not exists');
             }
 
