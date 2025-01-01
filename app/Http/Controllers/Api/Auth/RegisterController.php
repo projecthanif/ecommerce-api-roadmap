@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Notification;
 
 class RegisterController extends Controller
 {
+    public function __construct(
+        public SendOtpAction $sendOtpAction,
+    )
+    {
+    }
+
     public function __invoke(RegisterUserRequest $request, User $user): JsonResponse
     {
         $data = $request->validated();
@@ -21,16 +27,8 @@ class RegisterController extends Controller
             'user' => new UserResource($user),
         ];
 
-        $this->sendOtpCode($user);
+        $this->sendOtpAction->handle($user);
         return successResponse("Registration successful", $response);
-    }
-
-
-    public function sendOtpCode(User $user): void
-    {
-        $otp = fake()->unique()->numberBetween(1000, 9999);
-        cache()->put($user->email, $otp, now()->addMinutes(30));
-        Notification::send($user, new OtpNotification($user, $otp));
     }
 
 }

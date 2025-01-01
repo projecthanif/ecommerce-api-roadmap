@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\CurrentUserController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\OtpVerificationController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\RequestNewOtpController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
@@ -17,6 +18,8 @@ Route::prefix('auth')->group(function () {
     Route::post('register', RegisterController::class);
     Route::post('login', LoginController::class);
     Route::post('verify', OtpVerificationController::class);
+
+    Route::post('new-otp', RequestNewOtpController::class);
 
     Route::middleware([JwtMiddleware::class])->group(function () {
         Route::get('user', CurrentUserController::class);
