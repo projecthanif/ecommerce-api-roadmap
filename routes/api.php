@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('register', RegisterController::class);
     Route::post('login', LoginController::class);
-    Route::post('verify', OtpVerificationController::class);
 
+    Route::post('verify', OtpVerificationController::class);
     Route::post('new-otp', RequestNewOtpController::class);
 
     Route::middleware([JwtMiddleware::class])->group(function () {
@@ -27,10 +27,17 @@ Route::prefix('auth')->group(function () {
 
 });
 
+Route::get('product', [ProductController::class, 'index']);
+Route::get('product/{id}', [ProductController::class, 'show']);
+Route::get('brand', [BrandController::class, 'index']);
+Route::get('category', [CategoryController::class, 'index']);
+Route::get('category/{id}', [CategoryController::class, 'show']);
+
+
 Route::middleware([JwtMiddleware::class])->group(function () {
-    Route::apiResource('category', CategoryController::class);
-    Route::apiResource('brand', BrandController::class);
-    Route::apiResource('product', ProductController::class);
+    Route::apiResource('category', CategoryController::class)->except('show', 'index');
+    Route::apiResource('brand', BrandController::class)->except('show', 'index');
+    Route::apiResource('product', ProductController::class)->except('index', 'show');
     Route::apiResource('cart', CartController::class);
 });
 

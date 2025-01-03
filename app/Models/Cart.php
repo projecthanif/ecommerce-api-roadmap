@@ -11,7 +11,7 @@ class Cart extends AbstractModel
         'product_id',
     ];
 
-    public function product(): BelongsTo
+    public function products(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }

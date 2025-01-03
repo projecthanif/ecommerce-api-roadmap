@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Cart;
 
-use App\Http\Resources\Product\ProductCollection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

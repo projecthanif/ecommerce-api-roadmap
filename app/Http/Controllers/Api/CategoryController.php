@@ -46,7 +46,6 @@ class CategoryController extends Controller
                 data: $categoryWithProducts
             );
         } catch (NotFoundResourceException $e) {
-
             return errorResponse(
                 message: $e->getMessage(),
                 statusCode: Response::HTTP_NOT_FOUND
