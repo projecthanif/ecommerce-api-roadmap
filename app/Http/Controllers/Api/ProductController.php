@@ -57,6 +57,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $validatedData = $request->validated();
+
         return successResponse('Updated Successfully', $validatedData);
     }
 

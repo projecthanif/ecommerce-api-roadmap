@@ -18,9 +18,10 @@ class BrandFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->name();
+
         return [
             'name' => $name,
-            'slug' => (new SlugNormalizer())->normalize($name),
+            'slug' => (new SlugNormalizer)->normalize($name),
             'description' => $this->faker->text(),
         ];
     }

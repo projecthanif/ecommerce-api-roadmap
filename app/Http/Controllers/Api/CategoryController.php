@@ -15,7 +15,6 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class CategoryController extends Controller
 {
-
     public function index(): CategoryCollection
     {
         $categories = Category::paginate(10);
@@ -37,7 +36,7 @@ class CategoryController extends Controller
                 ->orWhere('id', $slug)
                 ->with('products')?->first();
 
-            if (!$category) {
+            if (! $category) {
                 throw new NotFoundResourceException('Category not found');
             }
 
@@ -60,7 +59,7 @@ class CategoryController extends Controller
         try {
             $category = Category::find($id);
 
-            if (!$category) {
+            if (! $category) {
                 throw new NotFoundResourceException('Category does not exists');
             }
             $validatedData = $request->validated();
@@ -86,7 +85,7 @@ class CategoryController extends Controller
 
             $category = Category::find($id);
 
-            if (!$category) {
+            if (! $category) {
                 throw new NotFoundResourceException('Category does not exists');
             }
 

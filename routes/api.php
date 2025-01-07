@@ -33,11 +33,9 @@ Route::get('brand', [BrandController::class, 'index']);
 Route::get('category', [CategoryController::class, 'index']);
 Route::get('category/{id}', [CategoryController::class, 'show']);
 
-
 Route::middleware([JwtMiddleware::class])->group(function () {
     Route::apiResource('category', CategoryController::class)->except('show', 'index');
     Route::apiResource('brand', BrandController::class)->except('show', 'index');
     Route::apiResource('product', ProductController::class)->except('index', 'show');
     Route::apiResource('cart', CartController::class);
 });
-

@@ -10,7 +10,6 @@ use Illuminate\Validation\Rule;
 
 class OtpVerificationController extends Controller
 {
-
     public function __invoke(Request $request): JsonResponse
     {
         $validatedData = $request->validate([

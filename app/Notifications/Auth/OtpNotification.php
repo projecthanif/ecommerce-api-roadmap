@@ -17,8 +17,7 @@ class OtpNotification extends Notification
     public function __construct(
         public User $user,
         public int $otp
-    )
-    {
+    ) {
         //
     }
 

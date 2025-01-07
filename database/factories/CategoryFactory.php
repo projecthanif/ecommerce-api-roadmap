@@ -18,9 +18,10 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->colorName();
+
         return [
             'name' => $name,
-            'slug' => (new SlugNormalizer())->normalize($name),
+            'slug' => (new SlugNormalizer)->normalize($name),
             'description' => $this->faker->text(),
         ];
     }

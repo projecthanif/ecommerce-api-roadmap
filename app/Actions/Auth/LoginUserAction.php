@@ -14,7 +14,7 @@ class LoginUserAction
         try {
             $attempt = JWTAuth::attempt($validated);
 
-            if (!$attempt) {
+            if (! $attempt) {
                 return response()->json([
                     'status' => 401,
                     'message' => 'Invalid email or password',

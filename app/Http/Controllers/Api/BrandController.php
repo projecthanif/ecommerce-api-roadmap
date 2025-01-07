@@ -45,7 +45,7 @@ class BrandController extends Controller
     {
         try {
             $brand = Brand::where('slug', $slug)->with('products')?->first();
-            if (!$brand) {
+            if (! $brand) {
                 throw new NotFoundResourceException('Brand not found');
             }
 
@@ -65,7 +65,7 @@ class BrandController extends Controller
     {
         try {
             $brand = Brand::find($id);
-            if (!$brand) {
+            if (! $brand) {
                 throw new NotFoundResourceException('Brand not found');
             }
             $brand->update($request->validated());
@@ -85,7 +85,7 @@ class BrandController extends Controller
         try {
             $brand = Brand::find($id);
 
-            if (!$brand) {
+            if (! $brand) {
                 throw new NotFoundResourceException('Brand not found');
             }
             $brand->delete();

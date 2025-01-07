@@ -9,12 +9,9 @@ use Illuminate\Http\Request;
 
 class RequestNewOtpController extends Controller
 {
-
     public function __construct(
         public SendOtpAction $sendOtpAction,
-    )
-    {
-    }
+    ) {}
 
     public function __invoke(Request $request)
     {

@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -18,6 +17,7 @@ class LoginController extends Controller
         if ($user->email_verified_at !== null) {
             return $action->handle($request->validated());
         }
+
         return errorResponse(
             message: 'Email is not verified',
         );

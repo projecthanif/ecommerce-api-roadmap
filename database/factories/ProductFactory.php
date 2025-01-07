@@ -21,7 +21,7 @@ class ProductFactory extends Factory
 
         return [
             'name' => $name,
-            'slug' => (new SlugNormalizer())->normalize($name),
+            'slug' => (new SlugNormalizer)->normalize($name),
             'description' => $this->faker->text(),
             'price' => $this->faker->numberBetween(1000, 10000),
             'quantity' => $this->faker->numberBetween(1, 100),
