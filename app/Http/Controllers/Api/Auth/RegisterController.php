@@ -15,8 +15,7 @@ class RegisterController extends Controller
 {
     public function __construct(
         public SendOtpAction $sendOtpAction,
-    )
-    {
+    ) {
     }
 
     public function __invoke(RegisterUserRequest $request, User $user): JsonResponse

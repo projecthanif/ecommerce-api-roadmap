@@ -20,6 +20,6 @@ class OtpVerificationController extends Controller
 
         User::where('email', $validatedData['email'])->first()->markEmailAsVerified();
 
-        return successResponse('OTP Verified');
+        return successResponse('Email verified');
     }
 }

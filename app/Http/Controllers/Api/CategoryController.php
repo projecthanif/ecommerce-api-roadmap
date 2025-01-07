@@ -33,7 +33,9 @@ class CategoryController extends Controller
     public function show(string $slug): JsonResponse
     {
         try {
-            $category = Category::where('slug', $slug)->with('products')?->first();
+            $category = Category::where('slug', $slug)
+                ->orWhere('id', $slug)
+                ->with('products')?->first();
 
             if (!$category) {
                 throw new NotFoundResourceException('Category not found');
