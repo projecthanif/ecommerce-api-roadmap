@@ -46,11 +46,11 @@ Route::get('category', [CategoryController::class, 'index']);
 Route::get('category/{id}', [CategoryController::class, 'show']);
 
 Route::middleware([JwtMiddleware::class])->group(function () {
-
-    Route::apiResource('brand', BrandController::class)->except('show', 'index');
-    Route::apiResource('product', ProductController::class)->except('index', 'show');
     Route::apiResource('cart', CartController::class);
 });
+
+
+
 
 Route::middleware(['jwtAuth', 'adminAuth'])->group(function () {
 
@@ -58,4 +58,13 @@ Route::middleware(['jwtAuth', 'adminAuth'])->group(function () {
     Route::patch('/category/{id}', [CategoryController::class, 'update']);
     Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 
+
+    Route::post('/brand', [BrandController::class, 'store']);
+    Route::post('/brand/{id}', [BrandController::class, 'update']);
+    Route::delete('/brand/{id}', [BrandController::class, 'destroy']);
+
+    Route::apiResource('product', ProductController::class)->except('index', 'show');
+    Route::post('/product', [ProductController::class, 'store']);
+    Route::patch('/product/{id}', [ProductController::class, 'update']);
+    Route::delete('/product/{id}', [ProductController::class, 'destroy']);
 });
