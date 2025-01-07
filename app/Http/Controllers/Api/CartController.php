@@ -10,12 +10,16 @@ use Illuminate\Http\JsonResponse;
 
 class CartController extends Controller
 {
-    public function index(): CartCollection
+    public function index()
     {
-        //        $cart = Cart::where('user_id', auth()->id())->with('products')->get()->first();
-        $cart = Cart::where('user_id', auth()->id())->with('products')->first();
+        $cart = Cart::where('user_id', auth()->id())
+            ->with('products')
+            ->get();
 
-        return new CartCollection($cart);
+        return successResponse(
+            'Cart fetched successfully',
+            new CartCollection($cart)
+        );
     }
 
     public function store(StoreCartRequest $request): JsonResponse

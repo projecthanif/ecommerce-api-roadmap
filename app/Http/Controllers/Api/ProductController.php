@@ -47,7 +47,7 @@ class ProductController extends Controller
     {
         try {
             $product = Product::find($id);
-            if (!$product) {
+            if (! $product) {
                 throw new NotFoundResourceException('Product does not exists');
             }
             $retrievedProduct = (new ProductResource($product))->additional([

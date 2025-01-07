@@ -17,9 +17,10 @@ class CartResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'products' => $this->whenLoaded('products', function ($products) {
-                return new ProductCollection($products);
-            }),
+            'products' => $this->whenLoaded(
+                'products',
+                new ProductCollection($this->products)
+            ),
         ];
     }
 }
