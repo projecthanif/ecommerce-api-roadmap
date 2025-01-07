@@ -8,6 +8,7 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
 use League\CommonMark\Normalizer\SlugNormalizer;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class ProductController extends Controller
 {
@@ -42,13 +43,21 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(string $id)
     {
-        $retrievedProduct = (new ProductResource($product))->additional([
-            'include_description' => true,
-        ]);
+        try {
+            $product = Product::find($id);
+            if (!$product) {
+                throw new NotFoundResourceException('Product does not exists');
+            }
+            $retrievedProduct = (new ProductResource($product))->additional([
+                'include_description' => true,
+            ]);
 
-        return successResponse('Product retrieved Successfully', $retrievedProduct);
+            return successResponse('Product retrieved Successfully', $retrievedProduct);
+        } catch (\Exception $e) {
+            return errorResponse($e->getMessage());
+        }
     }
 
     /**
@@ -58,7 +67,7 @@ class ProductController extends Controller
     {
         $validatedData = $request->validated();
 
-        return successResponse('Updated Successfully', $validatedData);
+        // return successResponse('Updated Successfully', $validatedData);
     }
 
     /**
