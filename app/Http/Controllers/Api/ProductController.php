@@ -7,6 +7,8 @@ use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
+use App\Query\ProductQuery;
+use Illuminate\Support\Facades\Request;
 use League\CommonMark\Normalizer\SlugNormalizer;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
@@ -17,7 +19,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10);
+
+        $queryParams = Request::query();
+
+        $products = $this->getfilteredProduct($queryParams);
 
         if ($products->isEmpty()) {
             return response()->json(['message' => 'No products found'], 404);
@@ -26,6 +31,24 @@ class ProductController extends Controller
         $productCollection = ProductResource::collection($products);
 
         return successResponse('Products', $productCollection);
+    }
+
+    public function getfilteredProduct(array $queryParams)
+    {
+        if (count($queryParams) === 0) {
+            return Product::paginate(10);
+        }
+
+        $productQuery = new ProductQuery;
+        $filters = $productQuery->filter($queryParams);
+
+        $products = Product::where(function ($query) use ($filters) {
+            foreach ($filters as $filter) {
+                $query->where(...$filter);
+            }
+        })->paginate(10);
+
+        return $products;
     }
 
     /**

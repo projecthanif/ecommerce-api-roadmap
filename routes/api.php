@@ -49,21 +49,16 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     Route::apiResource('cart', CartController::class);
 });
 
-
-
-
 Route::middleware(['jwtAuth', 'adminAuth'])->group(function () {
 
     Route::post('/category', [CategoryController::class, 'store']);
     Route::patch('/category/{id}', [CategoryController::class, 'update']);
     Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 
-
     Route::post('/brand', [BrandController::class, 'store']);
     Route::post('/brand/{id}', [BrandController::class, 'update']);
     Route::delete('/brand/{id}', [BrandController::class, 'destroy']);
 
-    Route::apiResource('product', ProductController::class)->except('index', 'show');
     Route::post('/product', [ProductController::class, 'store']);
     Route::patch('/product/{id}', [ProductController::class, 'update']);
     Route::delete('/product/{id}', [ProductController::class, 'destroy']);
